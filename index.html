@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Irregular Verbs</title>
+<style>
+:root{--bg:#07101f;--card:#1f2d60;--border:#7f8aaa;--accent:#8b5cf6;--cyan:#00e5ff;--gold:#ffd166;--good:#22c55e;--bad:#ef4444;}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI",Arial,sans-serif;color:#fff;min-height:100vh;background:#07101f;padding:18px;}
+.container{max-width:1320px;margin:0 auto}
+.header{margin-bottom:16px}
+.title{font-size:clamp(38px,5vw,70px);font-weight:900;letter-spacing:-.05em;margin:0;color:#fff}
+.panel{background:transparent;border-radius:20px;overflow:hidden}
+.start{display:grid;grid-template-columns:1.05fr .95fr;gap:24px;padding:34px;border:3px solid #8b5cf6;border-radius:18px;background:#0b1330}
+.card{background:#1f2d60;border:2px solid #7f8aaa;padding:24px;border-radius:16px}
+.card h2{margin:0 0 12px;font-size:28px;color:var(--gold)}
+.card li{font-size:18px;line-height:1.55;color:#e8eeff}
+.btnbar{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+button{border:0;border-radius:16px;padding:15px 22px;font-size:18px;font-weight:900;cursor:pointer;transition:transform .15s,filter .15s}
+button:hover{transform:translateY(-2px);filter:brightness(1.05)}
+.primary{background:linear-gradient(135deg,#fbbf24,#fb923c);color:#111827;box-shadow:0 10px 28px rgba(0,0,0,.25)}
+.secondary{background:#1f2d60;color:#fff;border:2px solid #7f8aaa}
+#game{display:none}
+.topstats{display:flex;gap:12px;flex-wrap:wrap;margin:0 0 14px 0}
+.stat{padding:10px 14px;border-radius:12px;background:#1f2d60;border:2px solid #7f8aaa;font-weight:800}
+.progress-wrap{height:10px;background:#26365f;border-radius:999px;overflow:hidden;margin-bottom:18px}
+.progress{height:100%;width:0%;background:linear-gradient(90deg,var(--cyan),#ffd166);transition:width .25s ease}
+.qbox{background:#07101f;color:#fff;border-radius:16px;padding:0 0 10px 0}
+.question-panel{border:3px solid #8b5cf6;border-radius:18px;background:#0b1330;text-align:center;padding:26px;margin-bottom:52px}
+.qtitle{font-size:clamp(30px,3.4vw,44px);line-height:1.15;margin:0;color:var(--gold);font-weight:900;letter-spacing:.01em}
+.baseverb{font-size:26px;color:#c7d2fe;margin-top:22px}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:56px 48px;padding:0 36px}
+.opt{width:100%;text-align:left;border:2px solid var(--border);background:#1f2d60;border-radius:14px;padding:25px 18px;font-size:clamp(24px,2.5vw,32px);font-weight:850;color:#fff;cursor:pointer;transition:transform .15s,border .15s,background .15s;min-height:120px;display:flex;align-items:center}
+.opt:hover{transform:translateY(-2px);border-color:#cbd5e1}
+.opt .letter{display:inline-flex;align-items:center;justify-content:center;min-width:64px;height:64px;border-radius:50%;background:#8b5cf6;border:2px solid var(--cyan);color:#fff;margin-right:18px;font-weight:1000}
+.opt.correct{border-color:var(--good);background:#14532d;box-shadow:0 0 0 6px rgba(34,197,94,.18)}
+.opt.wrong{border-color:var(--bad);background:#7f1d1d}
+.opt.dim{opacity:.55}
+.reveal{display:none;margin:28px 36px 0;border:2px dashed #7f8aaa;border-radius:16px;background:#101a3d;padding:20px}
+.reveal-grid{display:grid;grid-template-columns:240px 1fr;gap:20px;align-items:start}
+.miniimg{width:100%;max-width:240px;border-radius:20px;border:2px solid #7f8aaa;background:#fff}
+.tag{display:inline-block;padding:8px 12px;border-radius:999px;background:#ede9fe;color:#5b21b6;font-weight:800;margin-bottom:10px}
+.info h3{margin:0 0 8px;font-size:30px;color:#ffd166}
+.info p{margin:8px 0;font-size:19px;line-height:1.45;color:#e5e7eb}
+.forms{font-size:24px!important;font-weight:900;color:#fff!important}
+.correct-badge{display:inline-block;padding:8px 12px;border-radius:12px;background:#dcfce7;color:#166534;font-weight:900;margin:6px 0 10px}
+.footer{display:flex;justify-content:flex-end;align-items:center;gap:12px;flex-wrap:wrap;margin:22px 36px 0}
+#end{display:none;padding:40px;text-align:center;border:3px solid #8b5cf6;border-radius:18px;background:#0b1330}
+#end h2{font-size:clamp(34px,4vw,60px);margin:0 0 8px;color:#ffd166}
+#end p{font-size:20px;color:#e0e7ff}
+.table-wrap{overflow:auto;margin-top:22px}
+table{width:100%;border-collapse:collapse;background:#1f2d60}
+th,td{padding:12px 14px;border:1px solid #7f8aaa;text-align:left}
+th{background:#243579;color:#ffd166}
+@media(max-width:880px){.start{grid-template-columns:1fr}.options{grid-template-columns:1fr;gap:16px;padding:0}.question-panel{margin-bottom:24px}.reveal-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header"><h1 class="title">Irregular Verbs</h1></div>
+
+  <section id="start" class="panel start">
+    <div>
+      <h2 class="title" style="font-size:42px;color:#ffd166">Classroom Game</h2>
+      <div class="btnbar"><button class="primary" onclick="startPreparedGame()">Start Game</button></div>
+    </div>
+    <div class="card">
+      <h2>How to play</h2>
+      <ol>
+        <li>The order of all 50 questions is randomized when the software opens.</li>
+        <li>The positions of all 4 answers are randomized when the software opens.</li>
+        <li>Every answer has only this format: <b>past form / past participle</b>.</li>
+        <li>Click an answer to reveal the correct one.</li>
+        <li>Click <b>Next</b> to continue.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="game" class="panel">
+    <div class="topstats">
+      <div class="stat" id="scoreStat">Score: 0</div>
+      <div class="stat" id="remainStat">Remaining: 50</div>
+    </div>
+    <div class="progress-wrap"><div id="progress" class="progress"></div></div>
+    <div class="qbox">
+      <div class="question-panel">
+        <div class="qtitle" id="qTitle"></div>
+        <div class="baseverb" id="baseVerb"></div>
+      </div>
+      <div class="options" id="options"></div>
+      <div class="reveal" id="revealBox">
+        <div class="reveal-grid">
+          <div><img id="miniImg" class="miniimg" alt="verb picture"/></div>
+          <div class="info">
+            <div class="tag">Meaning support</div>
+            <div id="correctBadge" class="correct-badge"></div>
+            <h3 id="verbName"></h3>
+            <p class="forms" id="formsLine"></p>
+            <p><b>Meaning:</b> <span id="meaningLine"></span></p>
+            <p><b>Example:</b> <span id="exampleLine"></span></p>
+            <p><b>Practice:</b> <span id="teacherLine"></span></p>
+          </div>
+        </div>
+      </div>
+      <div class="footer"><button id="nextBtn" class="primary" onclick="nextQuestion()" style="display:none">Next ▶</button></div>
+    </div>
+  </section>
+
+  <section id="end" class="panel">
+    <h2>Great job!</h2>
+    <p id="finalScore"></p>
+    <button class="primary" onclick="newRandomSession()">Play Again with New Random Order</button>
+    <div class="table-wrap"><table id="reviewTable"></table></div>
+  </section>
+</div>
+
+<script>
+const ORIGINAL_QUESTIONS = [{"base": "arise", "past": "arose", "pp": "arisen", "correctText": "arose / arisen", "correctForms": "arise → arose → arisen", "teacherPrompt": "Make a sentence: “Yesterday, I arose ...” or “I have arisen ...”", "allChoices": ["arose / arisen", "arisen / arose", "arose / arose", "arisen / arisen"], "meaning": "to happen or appear", "example": "A problem can arise suddenly.", "image": "assets/arise.svg"}, {"base": "awake", "past": "awoke", "pp": "awoken", "correctText": "awoke / awoken", "correctForms": "awake → awoke → awoken", "teacherPrompt": "Make a sentence: “Yesterday, I awoke ...” or “I have awoken ...”", "allChoices": ["awoke / awoken", "awoken / awoke", "awoke / awoke", "awoken / awoken"], "meaning": "to stop sleeping; to wake up", "example": "She awoke early this morning.", "image": "assets/awake.svg"}, {"base": "bear", "past": "bore", "pp": "borne", "correctText": "bore / borne", "correctForms": "bear → bore → borne", "teacherPrompt": "Make a sentence: “Yesterday, I bore ...” or “I have borne ...”", "allChoices": ["bore / borne", "borne / bore", "bore / bore", "borne / borne"], "meaning": "to carry, support, or accept", "example": "This bridge can bear heavy traffic.", "image": "assets/bear.svg"}, {"base": "beat", "past": "beat", "pp": "beaten", "correctText": "beat / beaten", "correctForms": "beat → beat → beaten", "teacherPrompt": "Make a sentence: “Yesterday, I beat ...” or “I have beaten ...”", "allChoices": ["beat / beaten", "beaten / beat", "beat / beat", "beaten / beaten"], "meaning": "to hit repeatedly or defeat", "example": "Our team beat the champions.", "image": "assets/beat.svg"}, {"base": "become", "past": "became", "pp": "become", "correctText": "became / become", "correctForms": "become → became → become", "teacherPrompt": "Make a sentence: “Yesterday, I became ...” or “I have become ...”", "allChoices": ["became / become", "become / became", "became / became", "become / become"], "meaning": "to start to be; to turn into", "example": "He became a confident speaker.", "image": "assets/become.svg"}, {"base": "begin", "past": "began", "pp": "begun", "correctText": "began / begun", "correctForms": "begin → began → begun", "teacherPrompt": "Make a sentence: “Yesterday, I began ...” or “I have begun ...”", "allChoices": ["began / begun", "begun / began", "began / began", "begun / begun"], "meaning": "to start", "example": "The class began at eight o’clock.", "image": "assets/begin.svg"}, {"base": "bend", "past": "bent", "pp": "bent", "correctText": "bent / bent", "correctForms": "bend → bent → bent", "teacherPrompt": "Make a sentence: “Yesterday, I bent ...” or “I have bent ...”", "allChoices": ["bent / bent", "bended / bended", "bended / bent", "bent / bended"], "meaning": "to curve or make something not straight", "example": "He bent the wire carefully.", "image": "assets/bend.svg"}, {"base": "bind", "past": "bound", "pp": "bound", "correctText": "bound / bound", "correctForms": "bind → bound → bound", "teacherPrompt": "Make a sentence: “Yesterday, I bound ...” or “I have bound ...”", "allChoices": ["bound / bound", "binded / binded", "binded / bound", "bound / binded"], "meaning": "to tie something tightly", "example": "They bound the sticks together.", "image": "assets/bind.svg"}, {"base": "bleed", "past": "bled", "pp": "bled", "correctText": "bled / bled", "correctForms": "bleed → bled → bled", "teacherPrompt": "Make a sentence: “Yesterday, I bled ...” or “I have bled ...”", "allChoices": ["bled / bled", "bleeded / bleeded", "bleeded / bled", "bled / bleeded"], "meaning": "to lose blood", "example": "His finger bled after the cut.", "image": "assets/bleed.svg"}, {"base": "blow", "past": "blew", "pp": "blown", "correctText": "blew / blown", "correctForms": "blow → blew → blown", "teacherPrompt": "Make a sentence: “Yesterday, I blew ...” or “I have blown ...”", "allChoices": ["blew / blown", "blown / blew", "blew / blew", "blown / blown"], "meaning": "to move air or be moved by air", "example": "The wind blew strongly last night.", "image": "assets/blow.svg"}, {"base": "breed", "past": "bred", "pp": "bred", "correctText": "bred / bred", "correctForms": "breed → bred → bred", "teacherPrompt": "Make a sentence: “Yesterday, I bred ...” or “I have bred ...”", "allChoices": ["bred / bred", "breeded / breeded", "breeded / bred", "bred / breeded"], "meaning": "to produce young animals", "example": "The farm bred strong horses.", "image": "assets/breed.svg"}, {"base": "broadcast", "past": "broadcast", "pp": "broadcast", "correctText": "broadcast / broadcast", "correctForms": "broadcast → broadcast → broadcast", "teacherPrompt": "Make a sentence: “Yesterday, I broadcast ...” or “I have broadcast ...”", "allChoices": ["broadcast / broadcast", "broadcasted / broadcasted", "broadcasted / broadcast", "broadcast / broadcasted"], "meaning": "to send out by TV, radio, or online", "example": "The station broadcast the match live.", "image": "assets/broadcast.svg"}, {"base": "burst", "past": "burst", "pp": "burst", "correctText": "burst / burst", "correctForms": "burst → burst → burst", "teacherPrompt": "Make a sentence: “Yesterday, I burst ...” or “I have burst ...”", "allChoices": ["burst / burst", "bursted / bursted", "bursted / burst", "burst / bursted"], "meaning": "to break open suddenly", "example": "The balloon burst loudly.", "image": "assets/burst.svg"}, {"base": "cast", "past": "cast", "pp": "cast", "correctText": "cast / cast", "correctForms": "cast → cast → cast", "teacherPrompt": "Make a sentence: “Yesterday, I cast ...” or “I have cast ...”", "allChoices": ["cast / cast", "casted / casted", "casted / cast", "cast / casted"], "meaning": "to throw", "example": "He cast the line into the river.", "image": "assets/cast.svg"}, {"base": "cling", "past": "clung", "pp": "clung", "correctText": "clung / clung", "correctForms": "cling → clung → clung", "teacherPrompt": "Make a sentence: “Yesterday, I clung ...” or “I have clung ...”", "allChoices": ["clung / clung", "clinged / clinged", "clinged / clung", "clung / clinged"], "meaning": "to hold on tightly", "example": "The child clung to his mother.", "image": "assets/cling.svg"}, {"base": "creep", "past": "crept", "pp": "crept", "correctText": "crept / crept", "correctForms": "creep → crept → crept", "teacherPrompt": "Make a sentence: “Yesterday, I crept ...” or “I have crept ...”", "allChoices": ["crept / crept", "creeped / creeped", "creeped / crept", "crept / creeped"], "meaning": "to move slowly and quietly", "example": "The cat crept across the room.", "image": "assets/creep.svg"}, {"base": "deal", "past": "dealt", "pp": "dealt", "correctText": "dealt / dealt", "correctForms": "deal → dealt → dealt", "teacherPrompt": "Make a sentence: “Yesterday, I dealt ...” or “I have dealt ...”", "allChoices": ["dealt / dealt", "dealed / dealed", "dealed / dealt", "dealt / dealed"], "meaning": "to give out or handle something", "example": "She dealt the cards to the players.", "image": "assets/deal.svg"}, {"base": "dig", "past": "dug", "pp": "dug", "correctText": "dug / dug", "correctForms": "dig → dug → dug", "teacherPrompt": "Make a sentence: “Yesterday, I dug ...” or “I have dug ...”", "allChoices": ["dug / dug", "diged / diged", "diged / dug", "dug / diged"], "meaning": "to make a hole in the ground", "example": "They dug a hole for the tree.", "image": "assets/dig.svg"}, {"base": "dive", "past": "dived", "pp": "dived", "correctText": "dived / dived", "correctForms": "dive → dived → dived", "teacherPrompt": "Make a sentence: “Yesterday, I dived ...” or “I have dived ...”", "allChoices": ["dived / dived", "dive / dived", "dived / dive", "began / bound"], "meaning": "to jump into water or move down quickly", "example": "He dived into the pool.", "image": "assets/dive.svg"}, {"base": "draw", "past": "drew", "pp": "drawn", "correctText": "drew / drawn", "correctForms": "draw → drew → drawn", "teacherPrompt": "Make a sentence: “Yesterday, I drew ...” or “I have drawn ...”", "allChoices": ["drew / drawn", "drawn / drew", "drew / drew", "drawn / drawn"], "meaning": "to make a picture or pull something", "example": "She drew a beautiful map.", "image": "assets/draw.svg"}, {"base": "dwell", "past": "dwelt", "pp": "dwelt", "correctText": "dwelt / dwelt", "correctForms": "dwell → dwelt → dwelt", "teacherPrompt": "Make a sentence: “Yesterday, I dwelt ...” or “I have dwelt ...”", "allChoices": ["dwelt / dwelt", "dwelled / dwelled", "dwelled / dwelt", "dwelt / dwelled"], "meaning": "to live in a place", "example": "They dwelt in a small village.", "image": "assets/dwell.svg"}, {"base": "flee", "past": "fled", "pp": "fled", "correctText": "fled / fled", "correctForms": "flee → fled → fled", "teacherPrompt": "Make a sentence: “Yesterday, I fled ...” or “I have fled ...”", "allChoices": ["fled / fled", "fleed / fleed", "fleed / fled", "fled / fleed"], "meaning": "to run away from danger", "example": "People fled the storm.", "image": "assets/flee.svg"}, {"base": "fling", "past": "flung", "pp": "flung", "correctText": "flung / flung", "correctForms": "fling → flung → flung", "teacherPrompt": "Make a sentence: “Yesterday, I flung ...” or “I have flung ...”", "allChoices": ["flung / flung", "flinged / flinged", "flinged / flung", "flung / flinged"], "meaning": "to throw forcefully", "example": "He flung the bag onto the chair.", "image": "assets/fling.svg"}, {"base": "forbid", "past": "forbade", "pp": "forbidden", "correctText": "forbade / forbidden", "correctForms": "forbid → forbade → forbidden", "teacherPrompt": "Make a sentence: “Yesterday, I forbade ...” or “I have forbidden ...”", "allChoices": ["forbade / forbidden", "forbidden / forbade", "forbade / forbade", "forbidden / forbidden"], "meaning": "to not allow something", "example": "The rule forbade late entry.", "image": "assets/forbid.svg"}, {"base": "forecast", "past": "forecast", "pp": "forecast", "correctText": "forecast / forecast", "correctForms": "forecast → forecast → forecast", "teacherPrompt": "Make a sentence: “Yesterday, I forecast ...” or “I have forecast ...”", "allChoices": ["forecast / forecast", "forecasted / forecasted", "forecasted / forecast", "forecast / forecasted"], "meaning": "to predict something, especially weather", "example": "They forecast heavy rain.", "image": "assets/forecast.svg"}, {"base": "foresee", "past": "foresaw", "pp": "foreseen", "correctText": "foresaw / foreseen", "correctForms": "foresee → foresaw → foreseen", "teacherPrompt": "Make a sentence: “Yesterday, I foresaw ...” or “I have foreseen ...”", "allChoices": ["foresaw / foreseen", "foreseen / foresaw", "foresaw / foresaw", "foreseen / foreseen"], "meaning": "to know or expect before it happens", "example": "Nobody foresaw the problem.", "image": "assets/foresee.svg"}, {"base": "forgive", "past": "forgave", "pp": "forgiven", "correctText": "forgave / forgiven", "correctForms": "forgive → forgave → forgiven", "teacherPrompt": "Make a sentence: “Yesterday, I forgave ...” or “I have forgiven ...”", "allChoices": ["forgave / forgiven", "forgiven / forgave", "forgave / forgave", "forgiven / forgiven"], "meaning": "to stop being angry at someone", "example": "She forgave his mistake.", "image": "assets/forgive.svg"}, {"base": "forsake", "past": "forsook", "pp": "forsaken", "correctText": "forsook / forsaken", "correctForms": "forsake → forsook → forsaken", "teacherPrompt": "Make a sentence: “Yesterday, I forsook ...” or “I have forsaken ...”", "allChoices": ["forsook / forsaken", "forsaken / forsook", "forsook / forsook", "forsaken / forsaken"], "meaning": "to leave or abandon", "example": "He never forsook his friends.", "image": "assets/forsake.svg"}, {"base": "freeze", "past": "froze", "pp": "frozen", "correctText": "froze / frozen", "correctForms": "freeze → froze → frozen", "teacherPrompt": "Make a sentence: “Yesterday, I froze ...” or “I have frozen ...”", "allChoices": ["froze / frozen", "frozen / froze", "froze / froze", "frozen / frozen"], "meaning": "to become ice or very cold", "example": "The water froze overnight.", "image": "assets/freeze.svg"}, {"base": "grind", "past": "ground", "pp": "ground", "correctText": "ground / ground", "correctForms": "grind → ground → ground", "teacherPrompt": "Make a sentence: “Yesterday, I ground ...” or “I have ground ...”", "allChoices": ["ground / ground", "grinded / grinded", "grinded / ground", "ground / grinded"], "meaning": "to crush into small pieces", "example": "They ground the coffee beans.", "image": "assets/grind.svg"}, {"base": "kneel", "past": "knelt", "pp": "knelt", "correctText": "knelt / knelt", "correctForms": "kneel → knelt → knelt", "teacherPrompt": "Make a sentence: “Yesterday, I knelt ...” or “I have knelt ...”", "allChoices": ["knelt / knelt", "kneeled / kneeled", "kneeled / knelt", "knelt / kneeled"], "meaning": "to go down onto your knees", "example": "The player knelt on the field.", "image": "assets/kneel.svg"}, {"base": "lay", "past": "laid", "pp": "laid", "correctText": "laid / laid", "correctForms": "lay → laid → laid", "teacherPrompt": "Make a sentence: “Yesterday, I laid ...” or “I have laid ...”", "allChoices": ["laid / laid", "layed / layed", "layed / laid", "laid / layed"], "meaning": "to put something down carefully", "example": "She laid the keys on the table.", "image": "assets/lay.svg"}, {"base": "lead", "past": "led", "pp": "led", "correctText": "led / led", "correctForms": "lead → led → led", "teacherPrompt": "Make a sentence: “Yesterday, I led ...” or “I have led ...”", "allChoices": ["led / led", "leaded / leaded", "leaded / led", "led / leaded"], "meaning": "to guide or show the way", "example": "The captain led the team.", "image": "assets/lead.svg"}, {"base": "leap", "past": "leapt", "pp": "leapt", "correctText": "leapt / leapt", "correctForms": "leap → leapt → leapt", "teacherPrompt": "Make a sentence: “Yesterday, I leapt ...” or “I have leapt ...”", "allChoices": ["leapt / leapt", "leaped / leaped", "leaped / leapt", "leapt / leaped"], "meaning": "to jump high or far", "example": "The dog leapt over the wall.", "image": "assets/leap.svg"}, {"base": "lend", "past": "lent", "pp": "lent", "correctText": "lent / lent", "correctForms": "lend → lent → lent", "teacherPrompt": "Make a sentence: “Yesterday, I lent ...” or “I have lent ...”", "allChoices": ["lent / lent", "lended / lended", "lended / lent", "lent / lended"], "meaning": "to give something for a short time", "example": "He lent me his dictionary.", "image": "assets/lend.svg"}, {"base": "lie", "past": "lay", "pp": "lain", "correctText": "lay / lain", "correctForms": "lie → lay → lain", "teacherPrompt": "Make a sentence: “Yesterday, I lay ...” or “I have lain ...”", "allChoices": ["lay / lain", "lain / lay", "lay / lay", "lain / lain"], "meaning": "to be in a flat position", "example": "He lay on the sofa.", "image": "assets/lie.svg"}, {"base": "light", "past": "lit", "pp": "lit", "correctText": "lit / lit", "correctForms": "light → lit → lit", "teacherPrompt": "Make a sentence: “Yesterday, I lit ...” or “I have lit ...”", "allChoices": ["lit / lit", "lighted / lighted", "lighted / lit", "lit / lighted"], "meaning": "to make something burn or shine", "example": "She lit a candle.", "image": "assets/light.svg"}, {"base": "mistake", "past": "mistook", "pp": "mistaken", "correctText": "mistook / mistaken", "correctForms": "mistake → mistook → mistaken", "teacherPrompt": "Make a sentence: “Yesterday, I mistook ...” or “I have mistaken ...”", "allChoices": ["mistook / mistaken", "mistaken / mistook", "mistook / mistook", "mistaken / mistaken"], "meaning": "to think wrongly that someone or something is another", "example": "I mistook him for his brother.", "image": "assets/mistake.svg"}, {"base": "overcome", "past": "overcame", "pp": "overcome", "correctText": "overcame / overcome", "correctForms": "overcome → overcame → overcome", "teacherPrompt": "Make a sentence: “Yesterday, I overcame ...” or “I have overcome ...”", "allChoices": ["overcame / overcome", "overcome / overcame", "overcame / overcame", "overcome / overcome"], "meaning": "to deal successfully with a problem", "example": "She overcame her fear.", "image": "assets/overcome.svg"}, {"base": "overtake", "past": "overtook", "pp": "overtaken", "correctText": "overtook / overtaken", "correctForms": "overtake → overtook → overtaken", "teacherPrompt": "Make a sentence: “Yesterday, I overtook ...” or “I have overtaken ...”", "allChoices": ["overtook / overtaken", "overtaken / overtook", "overtook / overtook", "overtaken / overtaken"], "meaning": "to catch up with and pass", "example": "The car overtook the bus.", "image": "assets/overtake.svg"}, {"base": "prove", "past": "proved", "pp": "proven", "correctText": "proved / proven", "correctForms": "prove → proved → proven", "teacherPrompt": "Make a sentence: “Yesterday, I proved ...” or “I have proven ...”", "allChoices": ["proved / proven", "proven / proved", "proved / proved", "proven / proven"], "meaning": "to show that something is true", "example": "The evidence proved his point.", "image": "assets/prove.svg"}, {"base": "quit", "past": "quit", "pp": "quit", "correctText": "quit / quit", "correctForms": "quit → quit → quit", "teacherPrompt": "Make a sentence: “Yesterday, I quit ...” or “I have quit ...”", "allChoices": ["quit / quit", "quited / quited", "quited / quit", "quit / quited"], "meaning": "to stop doing something or leave", "example": "He quit the club last year.", "image": "assets/quit.svg"}, {"base": "seek", "past": "sought", "pp": "sought", "correctText": "sought / sought", "correctForms": "seek → sought → sought", "teacherPrompt": "Make a sentence: “Yesterday, I sought ...” or “I have sought ...”", "allChoices": ["sought / sought", "seeked / seeked", "seeked / sought", "sought / seeked"], "meaning": "to look for", "example": "They sought help immediately.", "image": "assets/seek.svg"}, {"base": "shake", "past": "shook", "pp": "shaken", "correctText": "shook / shaken", "correctForms": "shake → shook → shaken", "teacherPrompt": "Make a sentence: “Yesterday, I shook ...” or “I have shaken ...”", "allChoices": ["shook / shaken", "shaken / shook", "shook / shook", "shaken / shaken"], "meaning": "to move quickly from side to side", "example": "She shook the bottle.", "image": "assets/shake.svg"}, {"base": "shed", "past": "shed", "pp": "shed", "correctText": "shed / shed", "correctForms": "shed → shed → shed", "teacherPrompt": "Make a sentence: “Yesterday, I shed ...” or “I have shed ...”", "allChoices": ["shed / shed", "sheded / sheded", "sheded / shed", "shed / sheded"], "meaning": "to drop or lose naturally", "example": "The tree shed its leaves.", "image": "assets/shed.svg"}, {"base": "shrink", "past": "shrank", "pp": "shrunk", "correctText": "shrank / shrunk", "correctForms": "shrink → shrank → shrunk", "teacherPrompt": "Make a sentence: “Yesterday, I shrank ...” or “I have shrunk ...”", "allChoices": ["shrank / shrunk", "shrunk / shrank", "shrank / shrank", "shrunk / shrunk"], "meaning": "to become smaller", "example": "The shirt shrank in hot water.", "image": "assets/shrink.svg"}, {"base": "slay", "past": "slew", "pp": "slain", "correctText": "slew / slain", "correctForms": "slay → slew → slain", "teacherPrompt": "Make a sentence: “Yesterday, I slew ...” or “I have slain ...”", "allChoices": ["slew / slain", "slain / slew", "slew / slew", "slain / slain"], "meaning": "to kill, especially in stories", "example": "The hero slew the monster.", "image": "assets/slay.svg"}, {"base": "slide", "past": "slid", "pp": "slid", "correctText": "slid / slid", "correctForms": "slide → slid → slid", "teacherPrompt": "Make a sentence: “Yesterday, I slid ...” or “I have slid ...”", "allChoices": ["slid / slid", "slided / slided", "slided / slid", "slid / slided"], "meaning": "to move smoothly over a surface", "example": "He slid across the ice.", "image": "assets/slide.svg"}, {"base": "sling", "past": "slung", "pp": "slung", "correctText": "slung / slung", "correctForms": "sling → slung → slung", "teacherPrompt": "Make a sentence: “Yesterday, I slung ...” or “I have slung ...”", "allChoices": ["slung / slung", "slinged / slinged", "slinged / slung", "slung / slinged"], "meaning": "to throw or hang loosely", "example": "He slung the bag over his shoulder.", "image": "assets/sling.svg"}, {"base": "strive", "past": "strove", "pp": "striven", "correctText": "strove / striven", "correctForms": "strive → strove → striven", "teacherPrompt": "Make a sentence: “Yesterday, I strove ...” or “I have striven ...”", "allChoices": ["strove / striven", "striven / strove", "strove / strove", "striven / striven"], "meaning": "to try very hard", "example": "They strove to succeed.", "image": "assets/strive.svg"}];
+let QUESTIONS = [];
+let current = 0;
+let score = 0;
+let answered = false;
+let results = [];
+
+function randomInt(max) {
+  if (window.crypto && window.crypto.getRandomValues) {
+    const array = new Uint32Array(1);
+    window.crypto.getRandomValues(array);
+    return array[0] % max;
+  }
+  return Math.floor(Math.random() * max);
+}
+
+function shuffleArray(array) {
+  const a = array.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = randomInt(i + 1);
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function prepareRandomSession() {
+  const letters = ["A", "B", "C", "D"];
+  QUESTIONS = shuffleArray(ORIGINAL_QUESTIONS).map(q => {
+    const shuffledChoices = shuffleArray(q.allChoices);
+    const answerMap = {};
+    let correctLetter = "";
+    shuffledChoices.forEach((choice, index) => {
+      answerMap[letters[index]] = choice;
+      if (choice === q.correctText) correctLetter = letters[index];
+    });
+    return {...q, answerMap, correctLetter};
+  });
+}
+
+function resetState() {
+  current = 0;
+  score = 0;
+  answered = false;
+  results = [];
+}
+
+function startPreparedGame() {
+  resetState();
+  document.getElementById("start").style.display = "none";
+  document.getElementById("end").style.display = "none";
+  document.getElementById("game").style.display = "block";
+  renderQuestion();
+}
+
+function newRandomSession() {
+  prepareRandomSession();
+  startPreparedGame();
+}
+
+function renderQuestion() {
+  answered = false;
+  const q = QUESTIONS[current];
+  document.getElementById("qTitle").textContent = `What are the forms of “${q.base}”?`;
+  document.getElementById("baseVerb").textContent = `base verb: ${q.base}`;
+  document.getElementById("scoreStat").textContent = `Score: ${score}`;
+  document.getElementById("remainStat").textContent = `Remaining: ${QUESTIONS.length - current}`;
+  document.getElementById("progress").style.width = `${(current / QUESTIONS.length) * 100}%`;
+  document.getElementById("nextBtn").style.display = "none";
+  document.getElementById("revealBox").style.display = "none";
+
+  const optionsEl = document.getElementById("options");
+  optionsEl.innerHTML = "";
+  ["A", "B", "C", "D"].forEach(letter => {
+    const btn = document.createElement("button");
+    btn.className = "opt";
+    btn.innerHTML = `<span class="letter">${letter}</span>${q.answerMap[letter]}`;
+    btn.onclick = () => chooseAnswer(letter);
+    optionsEl.appendChild(btn);
+  });
+}
+
+function chooseAnswer(letter) {
+  if (answered) return;
+  answered = true;
+  const q = QUESTIONS[current];
+  const buttons = Array.from(document.querySelectorAll(".opt"));
+  ["A", "B", "C", "D"].forEach((l, idx) => {
+    const btn = buttons[idx];
+    btn.disabled = true;
+    if (l === q.correctLetter) btn.classList.add("correct");
+    else btn.classList.add("dim");
+    if (l === letter && l !== q.correctLetter) {
+      btn.classList.remove("dim");
+      btn.classList.add("wrong");
+    }
+  });
+
+  const isCorrect = letter === q.correctLetter;
+  if (isCorrect) score++;
+  results.push({number: current + 1, verb: q.base, forms: q.correctForms, answer: letter, right: q.correctLetter, correct: isCorrect});
+  document.getElementById("scoreStat").textContent = `Score: ${score}`;
+  document.getElementById("nextBtn").style.display = "inline-block";
+  document.getElementById("correctBadge").textContent = `Correct answer: ${q.correctLetter}`;
+  document.getElementById("verbName").textContent = q.base;
+  document.getElementById("formsLine").textContent = q.correctForms;
+  document.getElementById("meaningLine").textContent = q.meaning;
+  document.getElementById("exampleLine").textContent = q.example;
+  document.getElementById("teacherLine").textContent = q.teacherPrompt;
+  document.getElementById("miniImg").src = q.image;
+  document.getElementById("revealBox").style.display = "block";
+}
+
+function nextQuestion() {
+  if (current < QUESTIONS.length - 1) {
+    current++;
+    renderQuestion();
+  } else {
+    showEnd();
+  }
+}
+
+function showEnd() {
+  document.getElementById("game").style.display = "none";
+  document.getElementById("end").style.display = "block";
+  document.getElementById("finalScore").textContent = `Final score: ${score} / ${QUESTIONS.length}`;
+  let rows = "<tr><th>#</th><th>Verb</th><th>Correct forms</th><th>Your answer</th><th>Correct answer</th><th>Result</th></tr>";
+  rows += results.map(r => `<tr><td>${r.number}</td><td>${r.verb}</td><td>${r.forms}</td><td>${r.answer}</td><td>${r.right}</td><td>${r.correct ? "✓" : "Review"}</td></tr>`).join("");
+  document.getElementById("reviewTable").innerHTML = rows;
+}
+
+prepareRandomSession();
+</script>
+</body>
+</html>
